@@ -1,20 +1,39 @@
 {
   "name": "customer_management_system",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0-alpha",
+  "description": "A simple Customer Management System with MERN + GraphQL Stack.",
+  "main": "/src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js",
-    "serve": "node src/index.js"
+    "start": "nodemon src/index.js --exec babel-node",
+    "build": "babel src -d dist --source-maps",
+    "serve": "node src/index.js",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "Josue Rodriguez <josuerodcat90@gmail.com> (https://github.com/josuerodcat90)",
   "license": "MIT",
   "dependencies": {
+    "apollo-server-express": "^2.12.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.9.6"
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.0.0",
+    "graphql-tools": "^4.0.7",
+    "jsonwebtoken": "^8.5.1",
+    "merge-graphql-schemas": "^1.7.7",
+    "moment": "^2.24.0",
+    "mongoose": "^5.9.7",
+    "path": "^0.12.7",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.5"
   }
 }
