@@ -1,2 +1,3 @@
-# expressjs-server-starter
-A simple starter pack of expressjs server structure.
+# Customer Management System - Server
+
+A simple customer management system in MERN + GraphQL Stack.
