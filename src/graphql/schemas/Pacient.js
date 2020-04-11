@@ -2,34 +2,60 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 	type Pacient {
-		_id: ID
+		_id: ID!
 		firstname: String!
 		lastname: String!
-		dob: String
-		phonenumber: String!
+		birthDate: Date
+		idDocument: IdDocumentType
+		phoneNumber: String!
 		email: String
-		status: Int!
-		dates: [Date!]
-		images: [Image]
+		address: addressType
+		referedBy: ID
+		allergies: String
+		records: [recordType]
+		status: Int
+	}
+
+	type IdDocumentType {
+		docType: String
+		docNumber: String
+	}
+
+	type addressType {
+		zipcode: String
+		city: String
+		township: String
+		street: String
+		apartment: String
+	}
+
+	type recordType {
+		title: String
+		description: String
 	}
 
 	type Query {
-		getPacient(pacientID: ID!): Pacient!
+		getPacient(pacientId: ID!): Pacient!
 		getPacients: [Pacient]!
 	}
 
-	input PacientInput {
+	input pacientInput {
 		firstname: String!
 		lastname: String!
-		dob: String
-		phonenumber: String!
+		birthDate: Date
+		idDocument: IdDocumentType
+		phoneNumber: String!
 		email: String
-		status: Int!
+		address: addressType
+		referedBy: ID
+		allergies: String
+		records: recordType
+		status: Int
 	}
 
 	type Mutation {
-		createPacient(input: PacientInput!): Pacient!
-		updatePacient(pacientID: ID!, input: PacientInput): Pacient!
-		deletePacient(pacientID: ID!): Pacient!
+		createPacient(input: pacientInput!): Pacient!
+		updatePacient(pacientId: ID!, input: pacientInput): Pacient!
+		deletePacient(pacientId: ID!): Pacient!
 	}
 `;

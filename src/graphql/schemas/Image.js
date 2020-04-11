@@ -2,45 +2,31 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 	type Image {
-		_id: ID
-		imageName: String!
+		_id: ID!
+		name: String!
 		size: String!
-		id_pac: IdPac!
-		id_dat: IdDat!
-		fullroute: String!
-	}
-
-	type IdPac {
-		_id: ID!
-	}
-
-	type IdDat {
-		_id: ID!
+		pacientId: ID!
+		dateId: ID!
+		url: String!
 	}
 
 	type Query {
-		getImage(imageID: ID!): Image!
-		getImages: [Image]!
-	}
-
-	input iPac {
-		_id: ID!
-	}
-
-	input iDat {
-		_id: ID!
+		getImages: [Image]
+		getImage(imageId: ID!): Image
+		getImagesByPacient(pacientId: ID!): [Image]
+		getImagesByDate(dateId: ID!): [Image]
 	}
 
 	input ImageInput {
-		imageName: String!
+		name: String!
 		size: String!
-		id_pac: iPac!
-		id_dat: iDat!
-		fullroute: String!
+		pacientId: ID!
+		dateId: ID!
+		url: String!
 	}
 
 	type Mutation {
 		uploadImage(input: ImageInput!): Image!
-		deleteImage(imageID: ID!): Image!
+		deleteImage(imageId: ID!): String!
 	}
 `;

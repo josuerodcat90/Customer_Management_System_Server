@@ -5,15 +5,19 @@ export default gql`
 		_id: ID
 		firstname: String!
 		lastname: String!
-		username: String!
 		email: String!
 		password: String!
+		profilePic: profilePicType
 		status: Int!
 		range: Int!
 		token: String!
-		bachtitle: String!
-		usericon: String!
-		createdAt: String!
+		bachTitle: String!
+		userIcon: String!
+	}
+
+	type profilePicType {
+		alt: String
+		url: String
 	}
 
 	type Query {
@@ -21,23 +25,24 @@ export default gql`
 		getUsers: [User]!
 	}
 
-	input RegisterInput {
+	input userInput {
 		firstname: String!
 		lastname: String!
 		username: String!
 		email: String!
 		password: String!
+		profilePic: profilePicType
 		confirmPassword: String!
 		status: Int
 		range: Int
-		bachtitle: String
-		usericon: String
+		bachTitle: String
+		userIcon: String
 	}
 
 	type Mutation {
-		register(registerInput: RegisterInput!): User!
+		createUser(input: userInput!): User!
 		login(username: String!, password: String!): User!
-		updateUser(userID: ID!, input: RegisterInput): User!
-		deleteUser(userID: ID!): User!
+		updateUser(userId: ID!, input: userInput): User!
+		deleteUser(userId: ID!): User!
 	}
 `;
