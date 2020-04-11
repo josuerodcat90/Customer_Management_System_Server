@@ -31,7 +31,7 @@ const pacientSchema = new Schema(
 			city: { type: String, trim: true },
 			township: { type: String, trim: true },
 			street: { type: String, trim: true },
-			appartment: { type: String, trim: true },
+			apartment: { type: String, trim: true },
 		},
 		referedById: {
 			type: Schema.Types.ObjectId,
@@ -41,10 +41,12 @@ const pacientSchema = new Schema(
 			type: String,
 			trim: true,
 		},
-		records: {
-			title: { type: String, trim: true },
-			description: { type: String, trim: true },
-		},
+		records: [
+			{
+				title: { type: String, trim: true },
+				description: { type: String, trim: true },
+			},
+		],
 		status: {
 			type: Number,
 			required: true,

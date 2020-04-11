@@ -27,6 +27,7 @@ const dateSchema = new Schema(
 		},
 		createdBy: {
 			type: Schema.Types.ObjectId,
+			required: true,
 			ref: 'User',
 		},
 		pacientId: {

@@ -16,11 +16,11 @@ const doctorSchema = new Schema(
 			type: Number,
 			default: 1,
 		},
-		bachtitle: {
+		bachTitle: {
 			type: String,
 			default: 'Dr',
 		},
-		usericon: {
+		userIcon: {
 			type: String,
 			default: 'fas fa-user-md',
 		},
