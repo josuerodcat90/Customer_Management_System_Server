@@ -15,17 +15,17 @@ const dateSchema = new Schema(
 		},
 		editable: {
 			type: Boolean,
-			default: 1,
+			default: true,
 		},
 		allday: {
 			type: Boolean,
-			default: 0,
+			default: false,
 		},
 		doctorId: {
 			type: Schema.Types.ObjectId,
 			ref: 'Doctor',
 		},
-		userId: {
+		createdBy: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},

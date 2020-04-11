@@ -13,11 +13,11 @@ const pacientSchema = new Schema(
 			trim: true,
 		},
 		birthDate: Date,
-		idDocNumber: {
+		idDocument: {
 			docType: { type: String, trim: true },
 			docNumber: { type: String, trim: true },
 		},
-		phonenumber: {
+		phoneNumber: {
 			type: String,
 			required: true,
 			trim: true,
@@ -33,7 +33,10 @@ const pacientSchema = new Schema(
 			street: { type: String, trim: true },
 			appartment: { type: String, trim: true },
 		},
-		referedById: String,
+		referedById: {
+			type: Schema.Types.ObjectId,
+			ref: 'Pacient',
+		},
 		allergies: {
 			type: String,
 			trim: true,

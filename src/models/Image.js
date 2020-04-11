@@ -11,11 +11,13 @@ const imageSchema = new Schema(
 			required: true,
 		},
 		pacientId: {
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref: 'Pacient',
 			required: true,
 		},
 		dateId: {
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref: 'Date',
 			required: true,
 		},
 		url: {
