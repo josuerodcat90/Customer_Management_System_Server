@@ -5,8 +5,8 @@ export default gql`
 		_id: ID!
 		firstname: String!
 		lastname: String!
-		birthDate: Date
-		idDocument: IdDocumentType
+		birthDate: String
+		idDocument: idDocumentType
 		phoneNumber: String!
 		email: String
 		address: addressType
@@ -16,7 +16,12 @@ export default gql`
 		status: Int
 	}
 
-	type IdDocumentType {
+	type idDocumentType {
+		docType: String
+		docNumber: String
+	}
+
+	input idDocumentInput {
 		docType: String
 		docNumber: String
 	}
@@ -29,28 +34,41 @@ export default gql`
 		apartment: String
 	}
 
+	input addressInput {
+		zipcode: String
+		city: String
+		township: String
+		street: String
+		apartment: String
+	}
+
 	type recordType {
 		title: String
 		description: String
 	}
 
-	type Query {
-		getPacient(pacientId: ID!): Pacient!
-		getPacients: [Pacient]!
+	input recordInput {
+		title: String
+		description: String
 	}
 
 	input pacientInput {
 		firstname: String!
 		lastname: String!
-		birthDate: Date
-		idDocument: IdDocumentType
+		birthDate: String
+		idDocument: idDocumentInput
 		phoneNumber: String!
 		email: String
-		address: addressType
+		address: addressInput
 		referedBy: ID
 		allergies: String
-		records: recordType
+		records: [recordInput]
 		status: Int
+	}
+
+	type Query {
+		getPacient(pacientId: ID!): Pacient!
+		getPacients: [Pacient]!
 	}
 
 	type Mutation {

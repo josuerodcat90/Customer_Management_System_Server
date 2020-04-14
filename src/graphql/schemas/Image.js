@@ -7,6 +7,7 @@ export default gql`
 		size: String!
 		pacientId: ID!
 		dateId: ID!
+		uploadedBy: ID!
 		url: String!
 	}
 
@@ -17,7 +18,7 @@ export default gql`
 		getImagesByDate(dateId: ID!): [Image]
 	}
 
-	input ImageInput {
+	input imageInput {
 		name: String!
 		size: String!
 		pacientId: ID!
@@ -26,7 +27,7 @@ export default gql`
 	}
 
 	type Mutation {
-		uploadImage(input: ImageInput!): Image!
+		uploadImage(input: imageInput!): Image!
 		deleteImage(imageId: ID!): String!
 	}
 `;

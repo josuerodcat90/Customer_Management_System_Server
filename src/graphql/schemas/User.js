@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 	type User {
-		_id: ID
+		_id: ID!
 		firstname: String!
 		lastname: String!
 		email: String!
@@ -20,19 +20,23 @@ export default gql`
 		url: String
 	}
 
+	input profilePicInput {
+		alt: String
+		url: String
+	}
+
 	type Query {
-		getUser(userID: ID): User!
+		getUser(userId: ID): User!
 		getUsers: [User]!
 	}
 
 	input userInput {
 		firstname: String!
 		lastname: String!
-		username: String!
 		email: String!
 		password: String!
-		profilePic: profilePicType
 		confirmPassword: String!
+		profilePic: profilePicInput
 		status: Int
 		range: Int
 		bachTitle: String
@@ -41,7 +45,7 @@ export default gql`
 
 	type Mutation {
 		createUser(input: userInput!): User!
-		login(username: String!, password: String!): User!
+		login(email: String!, password: String!): User!
 		updateUser(userId: ID!, input: userInput): User!
 		deleteUser(userId: ID!): User!
 	}

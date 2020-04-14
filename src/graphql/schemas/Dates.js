@@ -30,7 +30,6 @@ export default gql`
 		editable: Boolean
 		allday: Boolean
 		doctorId: ID
-		createdBy: ID!
 		pacientId: ID
 	}
 
