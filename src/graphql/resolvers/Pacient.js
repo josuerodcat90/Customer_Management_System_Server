@@ -1,25 +1,27 @@
-import Pacients from '../../models/Pacient';
+import Pacient from '../../models/Pacient';
+import checkAuth from '../../utils/checkAuth';
+import { AuthenticationError } from 'apollo-server-core';
 
 export default {
 	Query: {
 		async getPacients() {
-			return await Pacients.find();
+			return await Pacient.find();
 		},
-		async getPacient(_, { pacientID }) {
-			return await Pacients.findById(pacientID);
-		}
+		async getPacient(_, { pacientId }) {
+			return await Pacient.findById(pacientId);
+		},
 	},
 	Mutation: {
 		async createPacient(_, { input }) {
-			const newPacient = new Pacients(input);
+			const newPacient = new Pacient(input);
 			await newPacient.save();
 			return newPacient;
 		},
-		async updatePacient(_, { pacientID, input }) {
-			return await Pacients.findByIdAndUpdate(pacientID, input, { new: true });
+		async updatePacient(_, { pacientId, input }) {
+			return await Pacient.findByIdAndUpdate(pacientId, input, { new: true });
 		},
-		async deletePacient(_, { pacientID }) {
-			return await Pacients.findByIdAndDelete(pacientID);
-		}
-	}
+		async deletePacient(_, { pacientId }) {
+			return await Pacient.findByIdAndDelete(pacientId);
+		},
+	},
 };

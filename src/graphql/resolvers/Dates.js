@@ -1,22 +1,21 @@
-import Dates from '../../models/Date';
+import Date from '../../models/Date';
 import checkAuth from '../../utils/checkAuth';
-import 'moment/locale/es';
 import moment from 'moment';
-import { AuthenticationError, UserInputError } from 'apollo-server-core';
+import { AuthenticationError } from 'apollo-server-core';
 
 export default {
 	Query: {
 		async getDates() {
 			try {
-				const dates = await Dates.find().sort({ createdAt: -1 });
+				const dates = await Date.find();
 				return dates;
 			} catch (err) {
 				throw new Error(err);
 			}
 		},
-		async getDate(_, { dateID }) {
+		async getDate(_, { dateId }) {
 			try {
-				const date = await Dates.findById(dateID);
+				const date = await Date.findById(dateId);
 				if (!date) {
 					throw new Error('Date not found!', Error);
 				} else {
@@ -26,55 +25,102 @@ export default {
 				throw new Error(err);
 			}
 		},
+		async getDatesByPacient(_, { pacientId }) {
+			try {
+				const dates = await Date.find({ pacientId: pacientId }).sort({ createdAt: -1 });
+				if (!dates) {
+					throw new Error('Dates of this pacient not found!', Error);
+				} else {
+					return dates;
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
 	},
 	Mutation: {
 		async createDate(
 			_,
-			{ input: { title, start_date, end_date, description, classname, pacient } },
+			{
+				input: {
+					title,
+					start_date,
+					end_date,
+					classname,
+					description,
+					editable,
+					allday,
+					doctorId,
+					pacientId,
+				},
+			},
 			context
 		) {
 			const user = checkAuth(context);
 
+			///verify if the fields are empty
 			if (title.trim() === '') {
-				throw new Error('Post title field must not be empty');
+				throw new Error('Title field must not be empty');
 			}
 			if (start_date.trim() === '') {
-				throw new Error('Post start date field must not be empty');
+				throw new Error('Start date field must not be empty');
 			}
 			if (end_date.trim() === '') {
-				throw new Error('Post end date field must not be empty');
-			}
-			if (description.trim() === '') {
-				throw new Error('Post description field must not be empty');
-			}
-			if (pacient.trim() === '') {
-				throw new Error('Post pacient field must not be empty');
+				throw new Error('End date field must not be empty');
 			}
 
-			const newDate = new Dates({
+			const newDate = new Date({
 				title,
-				start_date: moment(start_date).format('YYYY-MM-DDTHH:mm'),
-				end_date: moment(end_date).format('YYYY-MM-DDTHH:mm'),
-				description,
+				start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
+				end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
 				classname,
-				pacient,
-				nameString: user.firstname + ' ' + user.lastname,
-				username: user.username,
-				createdAt: moment().format('YYYY-MM-DDTHH:mm:ss'),
+				description,
+				editable,
+				allday,
+				doctorId,
+				createdBy: user._id,
+				pacientId,
 			});
 
 			const date = await newDate.save();
 
 			return date;
 		},
-		async updateDate(_, { dateID, description }, context) {
+		async updateDate(
+			_,
+			{
+				dateId,
+				input: {
+					title,
+					start_date,
+					end_date,
+					classname,
+					description,
+					editable,
+					allday,
+					doctorId,
+					pacientId,
+				},
+			},
+			context
+		) {
 			const user = checkAuth(context);
 
 			try {
-				const date = await Dates.findById(dateID);
-				if (user.username === date.username) {
-					date.description = description;
-					await date.save();
+				const date = await Date.findById(dateId);
+				if (date.createdBy == user._id) {
+					await Date.findByIdAndUpdate(date._id, {
+						title,
+						start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
+						end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
+						classname,
+						description,
+						editable,
+						allday,
+						doctorId,
+						createdBy: user._id,
+						pacientId,
+					});
 					return date;
 				} else {
 					throw new AuthenticationError('Action not allowed');
@@ -83,12 +129,12 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async deleteDate(_, { dateID }, context) {
+		async deleteDate(_, { dateId }, context) {
 			const user = checkAuth(context);
 
 			try {
-				const date = await Dates.findById(dateID);
-				if (user.username === date.username) {
+				const date = await Date.findById(dateId);
+				if (date.createdBy == user._id) {
 					await date.delete();
 					return 'Date deleted succesfully';
 				} else {
@@ -98,31 +144,5 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async likeDate(_, { dateID }, context) {
-			const user = checkAuth(context);
-
-			const date = await Dates.findById(dateID);
-			if (date) {
-				if (date.likes.find((like) => like.username === user.username)) {
-					/// date already likes, unlike it
-					date.likes = date.likes.filter((like) => like.username !== user.username);
-				} else {
-					/// Not liked, like date
-					date.likes.push({
-						nameString: user.firstname + ' ' + user.lastname,
-						username: user.username,
-						createdAt: moment().format('YYYY-MM-DDTHH:mm:ss'),
-					});
-				}
-
-				await date.save();
-				return date;
-			} else throw new UserInputError('Post not found');
-		},
-	},
-	Date: {
-		commentCount: (parent) => parent.comments.length,
-		imageCount: (parent) => parent.images.length,
-		likeCount: (parent) => parent.likes.length,
 	},
 };

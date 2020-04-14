@@ -1,23 +1,20 @@
 import { UserInputError } from 'apollo-server-express';
-import Users from '../../models/User';
+import User from '../../models/User';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import moment from 'moment';
-import 'moment/locale/es';
 import { validateUserRegisterInput, validateLoginInput } from '../../utils/validation';
 
 function generateToken(user) {
 	return jwt.sign(
 		{
 			_id: user._id,
-			username: user.username,
 			email: user.email,
 			firstname: user.firstname,
 			lastname: user.lastname,
 			range: user.range,
 			status: user.status,
-			title: user.bachtitle,
-			usericon: user.usericon,
+			title: user.bachTitle,
+			usericon: user.userIcon,
 		},
 		process.env.SECRET_KEY,
 		{ expiresIn: '1h' }
@@ -27,21 +24,21 @@ function generateToken(user) {
 export default {
 	Query: {
 		async getUsers() {
-			return await Users.find();
+			return await User.find();
 		},
-		async getUser(_, { userID }) {
-			return await Users.findById(userID);
+		async getUser(_, { userId }) {
+			return await User.findById(userId);
 		},
 	},
 	Mutation: {
-		async login(_, { username, password }) {
-			const { errors, valid } = validateLoginInput(username, password);
+		async login(_, { email, password }) {
+			const { errors, valid } = validateLoginInput(email, password);
 
 			if (!valid) {
 				throw new UserInputError('Errors', { errors });
 			}
 
-			const user = await Users.findOne({ username });
+			const user = await User.findOne({ email });
 			if (!user) {
 				errors.general = 'User not found';
 				throw new UserInputError('User not found', { errors });
@@ -61,30 +58,27 @@ export default {
 				token,
 			};
 		},
-		async register(
+		async createUser(
 			_,
 			{
-				registerInput: {
+				input: {
 					firstname,
 					lastname,
-					username,
 					email,
 					password,
 					confirmPassword,
 					status,
 					range,
-					bachtitle,
-					usericon,
+					bachTitle,
+					userIcon,
 				},
 			},
 			context,
 			info
 		) {
-			// TODO: validate user data
 			const { valid, errors } = validateUserRegisterInput(
 				firstname,
 				lastname,
-				username,
 				email,
 				password,
 				confirmPassword
@@ -92,25 +86,11 @@ export default {
 			if (!valid) {
 				throw new UserInputError('Errors', { errors });
 			}
-			///make sure the user & email doesnt already exist in DB
-			const user = await Users.findOne({ username });
-			const emailVal = await Users.findOne({ email });
+			///make sure the email doesnt already exist in DB
+			const emailVal = await User.findOne({ email });
 
-			if (user && emailVal) {
-				throw new UserInputError('Username and Email Address in use', {
-					errors: {
-						username: 'This username is taken',
-						email: 'This email is in use with other account',
-					},
-				});
-			} else if (user) {
-				throw new UserInputError('Username is taken', {
-					errors: {
-						username: 'This username is taken',
-					},
-				});
-			} else if (emailVal) {
-				throw new UserInputError('Email Address in use', {
+			if (emailVal) {
+				throw new UserInputError('Email address in use', {
 					errors: {
 						email: 'This email is in use with other account',
 					},
@@ -120,17 +100,15 @@ export default {
 				password = await bcryptjs.hash(password, 12);
 			}
 
-			const newUser = new Users({
+			const newUser = new User({
 				firstname,
 				lastname,
-				username,
 				email,
 				password,
 				status,
 				range,
-				bachtitle,
-				usericon,
-				createdAt: moment().format('YYYY-MM-DDTHH:mm:ss'),
+				bachTitle,
+				userIcon,
 			});
 			const res = await newUser.save();
 
@@ -142,11 +120,11 @@ export default {
 				token,
 			};
 		},
-		async updateUser(_, { userID, input }) {
-			return await Users.findByIdAndUpdate(userID, input, { new: true });
+		async updateUser(_, { userId, input }) {
+			return await User.findByIdAndUpdate(userId, input, { new: true });
 		},
-		async deleteUser(_, { userID }) {
-			return await Users.findByIdAndDelete(userID);
+		async deleteUser(_, { userId }) {
+			return await User.findByIdAndDelete(userId);
 		},
 	},
 };
