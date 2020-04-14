@@ -7,7 +7,7 @@ const dateSchema = new Schema(
 		end_date: String,
 		classname: {
 			type: String,
-			default: 'pendiente',
+			default: 'Pendiente',
 		},
 		description: {
 			type: String,

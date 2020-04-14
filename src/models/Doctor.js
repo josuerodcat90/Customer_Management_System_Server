@@ -18,7 +18,7 @@ const doctorSchema = new Schema(
 		},
 		bachTitle: {
 			type: String,
-			default: 'Dr',
+			default: 'Dr.',
 		},
 		userIcon: {
 			type: String,

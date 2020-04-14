@@ -20,6 +20,11 @@ const imageSchema = new Schema(
 			ref: 'Date',
 			required: true,
 		},
+		uploadedBy: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		},
 		url: {
 			type: String,
 			required: true,

@@ -12,7 +12,7 @@ const pacientSchema = new Schema(
 			required: true,
 			trim: true,
 		},
-		birthDate: Date,
+		birthDate: String,
 		idDocument: {
 			docType: { type: String, trim: true },
 			docNumber: { type: String, trim: true },
