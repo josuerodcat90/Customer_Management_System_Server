@@ -8,6 +8,8 @@ export default gql`
 		status: Int!
 		bachTitle: String!
 		userIcon: String!
+		createdAt: String!
+		updatedAt: String
 	}
 
 	type Query {

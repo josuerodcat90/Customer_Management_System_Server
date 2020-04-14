@@ -13,6 +13,8 @@ export default gql`
 		token: String!
 		bachTitle: String!
 		userIcon: String!
+		createdAt: String!
+		updatedAt: String
 	}
 
 	type profilePicType {

@@ -14,6 +14,8 @@ export default gql`
 		allergies: String
 		records: [recordType]
 		status: Int
+		createdAt: String!
+		updatedAt: String
 	}
 
 	type idDocumentType {

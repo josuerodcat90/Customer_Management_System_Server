@@ -13,6 +13,8 @@ export default gql`
 		doctorId: ID
 		createdBy: ID!
 		pacientId: ID
+		createdAt: String!
+		updatedAt: String
 	}
 
 	type Query {

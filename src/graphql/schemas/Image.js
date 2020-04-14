@@ -9,6 +9,8 @@ export default gql`
 		dateId: ID!
 		uploadedBy: ID!
 		url: String!
+		createdAt: String!
+		updatedAt: String
 	}
 
 	type Query {
