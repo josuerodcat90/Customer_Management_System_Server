@@ -25,9 +25,9 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async getDatesByPatient(_, { patient }) {
+		async getDatesByPatient(_, { patientId }) {
 			try {
-				const dates = await Date.find({ patient: patient }).sort({ createdAt: -1 });
+				const dates = await Date.find({ patient: patientId }).sort({ createdAt: -1 });
 				if (!dates) {
 					throw new Error('Dates of this patient not found!', Error);
 				} else {
