@@ -10,16 +10,16 @@ export default gql`
 		description: String
 		editable: Boolean
 		allday: Boolean
-		doctorId: ID
+		doctor: ID
 		createdBy: ID!
-		pacientId: ID
+		patient: ID
 		createdAt: String!
 		updatedAt: String
 	}
 
 	type Query {
 		getDates: [Date]!
-		getDatesByPacient(pacientId: ID!): [Date]!
+		getDatesByPatient(patientId: ID!): [Date]!
 		getDate(dateId: ID!): Date!
 	}
 
@@ -31,8 +31,8 @@ export default gql`
 		description: String
 		editable: Boolean
 		allday: Boolean
-		doctorId: ID
-		pacientId: ID
+		doctor: ID
+		pacient: ID
 	}
 
 	type Mutation {

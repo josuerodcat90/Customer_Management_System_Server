@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
-	type Pacient {
+	type Patient {
 		_id: ID!
 		firstname: String!
 		lastname: String!
@@ -54,7 +54,7 @@ export default gql`
 		description: String
 	}
 
-	input pacientInput {
+	input patientInput {
 		firstname: String!
 		lastname: String!
 		birthDate: String
@@ -69,13 +69,13 @@ export default gql`
 	}
 
 	type Query {
-		getPacient(pacientId: ID!): Pacient!
-		getPacients: [Pacient]!
+		getPatient(patientId: ID!): Patient!
+		getPatients: [Patient]!
 	}
 
 	type Mutation {
-		createPacient(input: pacientInput!): Pacient!
-		updatePacient(pacientId: ID!, input: pacientInput): Pacient!
-		deletePacient(pacientId: ID!): Pacient!
+		createPatient(input: patientInput!): Patient!
+		updatePatient(patientId: ID!, input: patientInput): Patient!
+		deletePatient(patientId: ID!): Patient!
 	}
 `;

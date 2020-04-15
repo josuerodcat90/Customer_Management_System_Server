@@ -24,7 +24,7 @@ const dateSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'Doctor',
 	},
-	creator: {
+	createdBy: {
 		type: Schema.Types.ObjectId,
 		required: true,
 		ref: 'User',

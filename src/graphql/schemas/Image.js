@@ -5,8 +5,8 @@ export default gql`
 		_id: ID!
 		name: String!
 		size: String!
-		pacientId: ID!
-		dateId: ID!
+		patient: ID!
+		date: ID!
 		uploadedBy: ID!
 		url: String!
 		createdAt: String!
@@ -16,15 +16,15 @@ export default gql`
 	type Query {
 		getImages: [Image]
 		getImage(imageId: ID!): Image
-		getImagesByPacient(pacientId: ID!): [Image]
+		getImagesByPatient(patientId: ID!): [Image]
 		getImagesByDate(dateId: ID!): [Image]
 	}
 
 	input imageInput {
 		name: String!
 		size: String!
-		pacientId: ID!
-		dateId: ID!
+		patient: ID!
+		date: ID!
 		url: String!
 	}
 
