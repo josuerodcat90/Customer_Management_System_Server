@@ -12,7 +12,7 @@ export default {
 			return await Image.findById(imageId);
 		},
 		async getImagesByPatient(_, { patientId }) {
-			return await Image.find(patientId).sort({ createdAt: -1 });
+			return await Image.find({ patient: patientId }).sort({ createdAt: -1 });
 		},
 		async getImagesByDate(_, { dateId }) {
 			return await Image.find(dateId).sort({ createdAt: -1 });
