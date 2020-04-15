@@ -9,12 +9,12 @@ const imageSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	pacientId: {
+	patient: {
 		type: Schema.Types.ObjectId,
-		ref: 'Pacient',
+		ref: 'Patient',
 		required: true,
 	},
-	dateId: {
+	date: {
 		type: Schema.Types.ObjectId,
 		ref: 'Date',
 		required: true,

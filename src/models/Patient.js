@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const pacientSchema = new Schema({
+const patientSchema = new Schema({
 	firstname: {
 		type: String,
 		required: true,
@@ -32,9 +32,9 @@ const pacientSchema = new Schema({
 		street: { type: String, trim: true },
 		apartment: { type: String, trim: true },
 	},
-	referedById: {
+	referedBy: {
 		type: Schema.Types.ObjectId,
-		ref: 'Pacient',
+		ref: 'Patient',
 	},
 	allergies: {
 		type: String,
@@ -55,4 +55,4 @@ const pacientSchema = new Schema({
 	updatedAt: String,
 });
 
-export default model('Pacient', pacientSchema);
+export default model('Patient', patientSchema);

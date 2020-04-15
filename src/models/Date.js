@@ -20,18 +20,18 @@ const dateSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
-	doctorId: {
+	doctor: {
 		type: Schema.Types.ObjectId,
 		ref: 'Doctor',
 	},
-	createdBy: {
+	creator: {
 		type: Schema.Types.ObjectId,
 		required: true,
 		ref: 'User',
 	},
-	pacientId: {
+	patient: {
 		type: Schema.Types.ObjectId,
-		ref: 'Pacient',
+		ref: 'Patient',
 	},
 	createdAt: String,
 	updatedAt: String,
