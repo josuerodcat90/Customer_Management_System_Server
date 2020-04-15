@@ -29,7 +29,7 @@ export default {
 			try {
 				const dates = await Date.find({ pacientId: pacientId }).sort({ createdAt: -1 });
 				if (!dates) {
-					throw new Error('Dates of this pacient not found!', Error);
+					throw new Error('Dates of this patient not found!', Error);
 				} else {
 					return dates;
 				}
@@ -80,6 +80,7 @@ export default {
 				doctorId,
 				createdBy: user._id,
 				pacientId,
+				createdAt: moment().format('YYYY/MM/DD HH:mm'),
 			});
 
 			const date = await newDate.save();
@@ -120,10 +121,13 @@ export default {
 						doctorId,
 						createdBy: user._id,
 						pacientId,
+						updatedAt: moment().format('YYYY/MM/DD HH:mm'),
 					});
 					return date;
 				} else {
-					throw new AuthenticationError('Action not allowed');
+					throw new AuthenticationError(
+						'Action not allowed, you must be logged on or have a valid token to update a date.'
+					);
 				}
 			} catch (err) {
 				throw new Error(err);
@@ -138,7 +142,9 @@ export default {
 					await date.delete();
 					return 'Date deleted succesfully';
 				} else {
-					throw new AuthenticationError('Action not allowed');
+					throw new AuthenticationError(
+						'Action not allowed, you must be logged on or have a valid token to delete a date.'
+					);
 				}
 			} catch (err) {
 				throw new Error(err);

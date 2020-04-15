@@ -1,8 +1,11 @@
 import { UserInputError } from 'apollo-server-express';
+import { AuthenticationError } from 'apollo-server-core';
 import User from '../../models/User';
+import moment from 'moment';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { validateUserRegisterInput, validateLoginInput } from '../../utils/validation';
+import checkAuth from '../../utils/checkAuth';
 
 function generateToken(user) {
 	return jwt.sign(
@@ -17,7 +20,7 @@ function generateToken(user) {
 			usericon: user.userIcon,
 		},
 		process.env.SECRET_KEY,
-		{ expiresIn: '1h' }
+		{ expiresIn: '3h' } ///FIXME: return the expire time to 1h
 	);
 }
 
@@ -109,6 +112,7 @@ export default {
 				range,
 				bachTitle,
 				userIcon,
+				createdAt: moment().format('YYYY/MM/DD HH:mm'),
 			});
 			const res = await newUser.save();
 
@@ -120,11 +124,59 @@ export default {
 				token,
 			};
 		},
-		async updateUser(_, { userId, input }) {
-			return await User.findByIdAndUpdate(userId, input, { new: true });
+		async updateUser(
+			_,
+			{
+				userId,
+				input: { firstname, lastname, email, password, status, range, bachTitle, userIcon },
+			},
+			context
+		) {
+			const user = checkAuth(context);
+			const dbUser = await User.findById(userId);
+
+			try {
+				if (user._id === dbUser._id) {
+					return await User.findByIdAndUpdate(
+						userId,
+						{
+							firstname,
+							lastname,
+							email,
+							password,
+							status,
+							range,
+							bachTitle,
+							userIcon,
+							createdAt: moment().format('YYYY/MM/DD HH:mm'),
+						},
+						{ new: true }
+					);
+				} else {
+					throw new AuthenticationError(
+						'Action not allowed, you must be the owner of this account to update it.'
+					);
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
 		},
-		async deleteUser(_, { userId }) {
-			return await User.findByIdAndDelete(userId);
+		async deleteUser(_, { userId }, context) {
+			const user = checkAuth(context);
+			const dbUser = await User.findById(userId);
+
+			try {
+				if (user._id === dbUser._id) {
+					await User.findByIdAndDelete(userId);
+					return 'User deleted succesfully';
+				} else {
+					throw new AuthenticationError(
+						'Action not allowed, you must be the owner of this account to delete it.'
+					);
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
 		},
 	},
 };

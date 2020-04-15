@@ -1,4 +1,5 @@
 import Doctor from '../../models/Doctor';
+import moment from 'moment';
 
 export default {
 	Query: {
@@ -10,13 +11,28 @@ export default {
 		},
 	},
 	Mutation: {
-		async createDoctor(_, { input }) {
-			const newDoctor = new Doctor(input);
+		async createDoctor(_, { input: { firstname, lastname, status } }) {
+			const newDoctor = new Doctor({
+				firstname,
+				lastname,
+				status,
+				createdAt: moment().format('YYYY/MM/DD HH:mm'),
+			});
 			await newDoctor.save();
+
 			return newDoctor;
 		},
-		async updateDoctor(_, { doctorId, input }) {
-			return await Doctor.findByIdAndUpdate(doctorId, input, { new: true });
+		async updateDoctor(_, { doctorId, input: { firstname, lastname, status } }) {
+			return await Doctor.findByIdAndUpdate(
+				doctorId,
+				{
+					firstname,
+					lastname,
+					status,
+					updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+				},
+				{ new: true }
+			);
 		},
 		async deleteDoctor(_, { doctorId }) {
 			return await Doctor.findByIdAndDelete(doctorId);

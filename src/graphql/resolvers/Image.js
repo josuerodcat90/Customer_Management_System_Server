@@ -1,4 +1,5 @@
 import Image from '../../models/Image';
+import moment from 'moment';
 import checkAuth from '../../utils/checkAuth';
 import { AuthenticationError } from 'apollo-server-core';
 
@@ -28,6 +29,7 @@ export default {
 				dateId,
 				uploadedBy: user._id,
 				url,
+				createdAt: moment().format('YYYY/MM/DD HH:mm'),
 			});
 
 			await newImage.save();
@@ -39,7 +41,7 @@ export default {
 			const image = await Image.findById(imageId);
 
 			try {
-				if (image.uploadedBy === user._id) {
+				if (image.uploadedBy == user._id) {
 					await image.delete();
 					return 'Image deleted succesfully';
 				} else {
