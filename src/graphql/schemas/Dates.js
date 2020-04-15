@@ -32,7 +32,7 @@ export default gql`
 		editable: Boolean
 		allday: Boolean
 		doctor: ID
-		pacient: ID
+		patient: ID
 	}
 
 	type Mutation {
