@@ -8,25 +8,25 @@ export default {
 		async getImages() {
 			return await Image.find();
 		},
-		async getImage(_, { imageID }) {
-			return await Image.findById(imageID);
+		async getImage(_, { imageId }) {
+			return await Image.findById(imageId);
 		},
-		async getImagesByPacient(_, { pacientId }) {
-			return await Image.find(pacientId).sort({ createdAt: -1 });
+		async getImagesByPatient(_, { patientId }) {
+			return await Image.find(patientId).sort({ createdAt: -1 });
 		},
 		async getImagesByDate(_, { dateId }) {
 			return await Image.find(dateId).sort({ createdAt: -1 });
 		},
 	},
 	Mutation: {
-		async uploadImage(_, { input: { name, size, pacientId, dateId, url } }, context) {
+		async uploadImage(_, { input: { name, size, pacient, date, url } }, context) {
 			const user = checkAuth(context);
 
 			const newImage = new Image({
 				name,
 				size,
-				pacientId,
-				dateId,
+				pacient,
+				date,
 				uploadedBy: user._id,
 				url,
 				createdAt: moment().format('YYYY/MM/DD HH:mm'),

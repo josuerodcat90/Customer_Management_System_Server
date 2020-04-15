@@ -25,9 +25,9 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async getDatesByPacient(_, { pacientId }) {
+		async getDatesByPatient(_, { patient }) {
 			try {
-				const dates = await Date.find({ pacientId: pacientId }).sort({ createdAt: -1 });
+				const dates = await Date.find({ patient: patient }).sort({ createdAt: -1 });
 				if (!dates) {
 					throw new Error('Dates of this patient not found!', Error);
 				} else {
@@ -50,8 +50,8 @@ export default {
 					description,
 					editable,
 					allday,
-					doctorId,
-					pacientId,
+					doctor,
+					patient,
 				},
 			},
 			context
@@ -77,9 +77,9 @@ export default {
 				description,
 				editable,
 				allday,
-				doctorId,
+				doctor,
 				createdBy: user._id,
-				pacientId,
+				patient,
 				createdAt: moment().format('YYYY/MM/DD HH:mm'),
 			});
 
@@ -99,8 +99,8 @@ export default {
 					description,
 					editable,
 					allday,
-					doctorId,
-					pacientId,
+					doctor,
+					patient,
 				},
 			},
 			context
@@ -118,9 +118,9 @@ export default {
 						description,
 						editable,
 						allday,
-						doctorId,
+						doctor,
 						createdBy: user._id,
-						pacientId,
+						patient,
 						updatedAt: moment().format('YYYY/MM/DD HH:mm'),
 					});
 					return date;

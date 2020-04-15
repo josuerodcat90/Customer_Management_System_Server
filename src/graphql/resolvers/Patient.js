@@ -1,19 +1,19 @@
-import Pacient from '../../models/Pacient';
+import Patient from '../../models/Patient';
 import moment from 'moment';
 import checkAuth from '../../utils/checkAuth';
 import { AuthenticationError } from 'apollo-server-core';
 
 export default {
 	Query: {
-		async getPacients() {
-			return await Pacient.find();
+		async getPatients() {
+			return await Patient.find();
 		},
-		async getPacient(_, { pacientId }) {
-			return await Pacient.findById(pacientId);
+		async getPatient(_, { patientId }) {
+			return await Patient.findById(patientId);
 		},
 	},
 	Mutation: {
-		async createPacient(
+		async createPatient(
 			_,
 			{
 				input: {
@@ -35,7 +35,7 @@ export default {
 			try {
 				const user = checkAuth(context);
 				if (user) {
-					const newPacient = new Pacient({
+					const newPatient = new Patient({
 						firstname,
 						lastname,
 						birthDate,
@@ -49,22 +49,22 @@ export default {
 						status,
 						createdAt: moment().format('YYYY/MM/DD HH:mm'),
 					});
-					await newPacient.save();
+					await newPatient.save();
 
-					return newPacient;
+					return newPatient;
 				} else {
 					throw new AuthenticationError(
-						'Action not allowed, you must be logged on or have a valid token to add a new pacient'
+						'Action not allowed, you must be logged on or have a valid token to add a new patient'
 					);
 				}
 			} catch (err) {
 				throw new Error(err);
 			}
 		},
-		async updatePacient(
+		async updatePatient(
 			_,
 			{
-				pacientId,
+				patientId,
 				input: {
 					firstname,
 					lastname,
@@ -85,8 +85,8 @@ export default {
 
 			try {
 				if (user) {
-					return await Pacient.findByIdAndUpdate(
-						pacientId,
+					return await Patient.findByIdAndUpdate(
+						patientId,
 						{
 							firstname,
 							lastname,
@@ -112,13 +112,13 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async deletePacient(_, { pacientId }, context) {
+		async deletePatient(_, { patientId }, context) {
 			const user = checkAuth(context);
 
 			try {
 				if (user) {
-					await Pacient.findByIdAndDelete(pacientId);
-					return 'Patient deleted successfuly';
+					await Patient.findByIdAndDelete(patientId);
+					return 'Patient deleted succesfully';
 				} else {
 					throw new AuthenticationError(
 						'Action not allowed, you must be logged on or have a valid token to delete a patient.'

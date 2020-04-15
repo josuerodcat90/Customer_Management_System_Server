@@ -19,7 +19,7 @@ export default gql`
 
 	type Query {
 		getDates: [Date]!
-		getDatesByPatient(patientId: ID!): [Date]!
+		getDatesByPatient(patient: ID!): [Date]!
 		getDate(dateId: ID!): Date!
 	}
 
