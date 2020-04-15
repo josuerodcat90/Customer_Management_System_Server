@@ -148,7 +148,7 @@ export default {
 							range,
 							bachTitle,
 							userIcon,
-							createdAt: moment().format('YYYY/MM/DD HH:mm'),
+							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
 						},
 						{ new: true }
 					);
