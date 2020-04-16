@@ -10,9 +10,9 @@ export default gql`
 		description: String
 		editable: Boolean
 		allday: Boolean
-		doctor: ID
-		createdBy: ID!
-		patient: ID
+		doctor: Doctor
+		createdBy: User!
+		patient: Patient
 		createdAt: String!
 		updatedAt: String
 	}

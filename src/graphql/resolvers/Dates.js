@@ -7,7 +7,7 @@ export default {
 	Query: {
 		async getDates() {
 			try {
-				const dates = await Date.find();
+				const dates = await Date.find({}).populate('doctor patient createdBy');
 				return dates;
 			} catch (err) {
 				throw new Error(err);
@@ -15,7 +15,7 @@ export default {
 		},
 		async getDate(_, { dateId }) {
 			try {
-				const date = await Date.findById(dateId);
+				const date = await Date.findById(dateId).populate('doctor patient createdBy');
 				if (!date) {
 					throw new Error('Date not found!', Error);
 				} else {
@@ -27,7 +27,9 @@ export default {
 		},
 		async getDatesByPatient(_, { patientId }) {
 			try {
-				const dates = await Date.find({ patient: patientId }).sort({ createdAt: -1 });
+				const dates = await Date.find({ patient: patientId })
+					.sort({ createdAt: -1 })
+					.populate('doctor patient createdBy');
 				if (!dates) {
 					throw new Error('Dates of this patient not found!', Error);
 				} else {
