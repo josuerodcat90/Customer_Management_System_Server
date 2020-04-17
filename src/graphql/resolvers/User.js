@@ -20,7 +20,7 @@ function generateToken(user) {
 			usericon: user.userIcon,
 		},
 		process.env.SECRET_KEY,
-		{ expiresIn: '3h' } ///FIXME: return the expire time to 1h
+		{ expiresIn: '7d' } ///FIXME: return the expire time to 1h
 	);
 }
 
@@ -136,7 +136,7 @@ export default {
 			const dbUser = await User.findById(userId);
 
 			try {
-				if (user._id === dbUser._id) {
+				if (user._id == dbUser._id) {
 					return await User.findByIdAndUpdate(
 						userId,
 						{
@@ -166,7 +166,7 @@ export default {
 			const dbUser = await User.findOne({ _id: userId });
 
 			try {
-				if (user._id === dbUser._id) {
+				if (user._id == dbUser._id) {
 					await dbUser.delete();
 					return 'User deleted succesfully';
 				} else {

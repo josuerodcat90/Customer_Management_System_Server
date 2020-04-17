@@ -1,39 +1,39 @@
-import Date from '../../models/Date';
+import Appointment from '../../models/Appointment';
 import checkAuth from '../../utils/checkAuth';
 import moment from 'moment';
 import { AuthenticationError } from 'apollo-server-core';
 
 export default {
 	Query: {
-		async getDates() {
+		async getAppointments() {
 			try {
-				const dates = await Date.find();
-				return dates;
+				const appointments = await Appointment.find();
+				return appointments;
 			} catch (err) {
 				throw new Error(err);
 			}
 		},
-		async getDate(_, { dateId }) {
+		async getAppointment(_, { appointmentId }) {
 			try {
-				const date = await Date.findOne({ _id: dateId });
-				if (!date) {
-					throw new Error('Date not found!', Error);
+				const appointment = await Appointment.findOne({ _id: appointmentId });
+				if (!appointment) {
+					throw new Error('Appointment not found!', Error);
 				} else {
-					return date;
+					return appointment;
 				}
 			} catch (err) {
 				throw new Error(err);
 			}
 		},
-		async getDatesByPatient(_, { patientId }) {
+		async getAppointmentsByPatient(_, { patientId }) {
 			try {
-				const dates = await Date.find({ patient: patientId }).sort({
+				const appointments = await Appointment.find({ patient: patientId }).sort({
 					createdAt: -1,
 				});
-				if (!dates) {
-					throw new Error('Dates of this patient not found!', Error);
+				if (!appointments) {
+					throw new Error('Appointments of this patient not found!', Error);
 				} else {
-					return dates;
+					return appointments;
 				}
 			} catch (err) {
 				throw new Error(err);
@@ -41,7 +41,7 @@ export default {
 		},
 	},
 	Mutation: {
-		async createDate(
+		async createAppointment(
 			_,
 			{
 				input: {
@@ -71,7 +71,7 @@ export default {
 				throw new Error('End date field must not be empty');
 			}
 
-			const newDate = new Date({
+			const newAppointment = new Appointment({
 				title,
 				start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
 				end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
@@ -85,14 +85,14 @@ export default {
 				createdAt: moment().format('YYYY/MM/DD HH:mm'),
 			});
 
-			const date = await newDate.save();
+			const appointment = await newAppointment.save();
 
-			return date;
+			return appointment;
 		},
-		async updateDate(
+		async updateAppointment(
 			_,
 			{
-				dateId,
+				appointmentId,
 				input: {
 					title,
 					start_date,
@@ -108,12 +108,16 @@ export default {
 			context
 		) {
 			const user = checkAuth(context);
-			const date = await Date.findOne({ _id: dateId }, {}, { autopopulate: false });
+			const appointment = await Appointment.findOne(
+				{ _id: appointmentId },
+				{},
+				{ autopopulate: false }
+			);
 
 			try {
-				if (date.createdBy == user._id) {
-					const updatedDate = await Date.findOneAndUpdate(
-						{ _id: dateId },
+				if (appointment.createdBy == user._id) {
+					const updatedAppointment = await Appointment.findOneAndUpdate(
+						{ _id: appointmentId },
 						{
 							title,
 							start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
@@ -129,27 +133,31 @@ export default {
 						},
 						{ new: true }
 					);
-					return updatedDate;
+					return updatedAppointment;
 				} else {
 					throw new AuthenticationError(
-						'Action not allowed, you must be logged on or have a valid token to update a date.'
+						'Action not allowed, you must be logged on or have a valid token to update an appointment.'
 					);
 				}
 			} catch (err) {
 				throw new Error(err);
 			}
 		},
-		async deleteDate(_, { dateId }, context) {
+		async deleteAppointment(_, { appointmentId }, context) {
 			const user = checkAuth(context);
-			const date = await Date.findOne({ _id: dateId }, {}, { autopopulate: false });
+			const appointment = await Appointment.findOne(
+				{ _id: appointmentId },
+				{},
+				{ autopopulate: false }
+			);
 
 			try {
-				if (date.createdBy == user._id) {
-					await date.delete();
-					return 'Date deleted succesfully.';
+				if (appointment.createdBy == user._id) {
+					await appointment.delete();
+					return 'Appointment deleted succesfully.';
 				} else {
 					throw new AuthenticationError(
-						'Action not allowed, you must be logged on or have a valid token to delete a date.'
+						'Action not allowed, you must be logged on or have a valid token to delete an appointment.'
 					);
 				}
 			} catch (err) {

@@ -49,6 +49,6 @@ export default gql`
 		createUser(input: userInput!): User!
 		login(email: String!, password: String!): User!
 		updateUser(userId: ID!, input: userInput): User!
-		deleteUser(userId: ID!): User!
+		deleteUser(userId: ID!): String!
 	}
 `;

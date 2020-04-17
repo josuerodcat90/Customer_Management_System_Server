@@ -14,27 +14,36 @@ export default {
 		async getImagesByPatient(_, { patientId }) {
 			return await Image.find({ patient: patientId }).sort({ createdAt: -1 });
 		},
-		async getImagesByDate(_, { dateId }) {
-			return await Image.find({ date: dateId }).sort({ createdAt: -1 });
+		async getImagesByAppointment(_, { appointmentId }) {
+			return await Image.find({ appointment: appointmentId }).sort({ createdAt: -1 });
 		},
 	},
 	Mutation: {
-		async uploadImage(_, { input: { name, size, pacient, date, url } }, context) {
+		async uploadImage(_, { input: { name, size, pacient, appointment, url } }, context) {
 			const user = checkAuth(context);
 
-			const newImage = new Image({
-				name,
-				size,
-				pacient,
-				date,
-				uploadedBy: user._id,
-				url,
-				createdAt: moment().format('YYYY/MM/DD HH:mm'),
-			});
+			try {
+				if (user) {
+					const newImage = new Image({
+						name,
+						size,
+						pacient,
+						appointment,
+						uploadedBy: user._id,
+						url,
+						createdAt: moment().format('YYYY/MM/DD HH:mm'),
+					});
 
-			await newImage.save();
-
-			return newImage;
+					await newImage.save();
+					return newImage;
+				} else {
+					throw new AuthenticationError(
+						'Action not allowed, you must be logged on or have a valid token to upload an image.'
+					);
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
 		},
 		async deleteImage(_, { imageId }, context) {
 			const user = checkAuth(context);

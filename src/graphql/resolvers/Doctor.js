@@ -72,7 +72,7 @@ export default {
 					throw new Error("The Doctor doesn't exist in the database.");
 				} else {
 					throw new AuthenticationError(
-						'Action not allowed, you must be logged on or have a valid token to update a Doctor.'
+						'Action not allowed, you must be logged on or have a valid token to delete a Doctor.'
 					);
 				}
 			} catch (err) {
