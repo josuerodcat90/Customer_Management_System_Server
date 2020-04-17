@@ -6,7 +6,7 @@ export default gql`
 		name: String!
 		size: String!
 		patient: ID!
-		date: ID!
+		appointment: ID!
 		uploadedBy: ID!
 		url: String!
 		createdAt: String!
@@ -17,14 +17,14 @@ export default gql`
 		getImages: [Image]
 		getImage(imageId: ID!): Image
 		getImagesByPatient(patientId: ID!): [Image]
-		getImagesByDate(dateId: ID!): [Image]
+		getImagesByAppointment(appointmentId: ID!): [Image]
 	}
 
 	input imageInput {
 		name: String!
 		size: String!
 		patient: ID!
-		date: ID!
+		appointment: ID!
 		url: String!
 	}
 

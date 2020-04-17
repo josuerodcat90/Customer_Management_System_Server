@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
-	type Date {
+	type Appointment {
 		_id: ID!
 		title: String!
 		start_date: String!
@@ -18,12 +18,12 @@ export default gql`
 	}
 
 	type Query {
-		getDates: [Date]!
-		getDatesByPatient(patientId: ID!): [Date!]
-		getDate(dateId: ID!): Date!
+		getAppointments: [Appointment!]!
+		getAppointmentsByPatient(patientId: ID!): [Appointment!]
+		getAppointment(appointmentId: ID!): Appointment!
 	}
 
-	input dateInput {
+	input appointmentInput {
 		title: String!
 		start_date: String!
 		end_date: String!
@@ -36,8 +36,8 @@ export default gql`
 	}
 
 	type Mutation {
-		createDate(input: dateInput!): Date!
-		updateDate(dateId: ID!, input: dateInput!): Date!
-		deleteDate(dateId: ID!): String!
+		createAppointment(input: appointmentInput!): Appointment!
+		updateAppointment(appointmentId: ID!, input: appointmentInput!): Appointment!
+		deleteAppointment(appointmentId: ID!): String!
 	}
 `;

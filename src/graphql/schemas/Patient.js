@@ -12,7 +12,7 @@ export default gql`
 		address: addressType
 		referedBy: User
 		allergies: String
-		records: [recordType]
+		records: [recordType!]
 		status: Int
 		createdAt: String!
 		updatedAt: String
@@ -70,7 +70,7 @@ export default gql`
 
 	type Query {
 		getPatient(patientId: ID!): Patient!
-		getPatients: [Patient]!
+		getPatients: [Patient!]!
 	}
 
 	type Mutation {
