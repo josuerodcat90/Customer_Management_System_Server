@@ -6,7 +6,6 @@ export default gql`
 		firstname: String!
 		lastname: String!
 		email: String!
-		password: String!
 		profilePic: profilePicType
 		status: Int!
 		range: Int!
@@ -29,7 +28,7 @@ export default gql`
 
 	type Query {
 		getUser(userId: ID): User!
-		getUsers: [User]!
+		getUsers: [User!]
 	}
 
 	input userInput {
