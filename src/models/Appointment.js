@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-const dateSchema = new Schema({
+const appointmentSchema = new Schema({
 	title: String,
 	start_date: String,
 	end_date: String,
@@ -40,6 +40,6 @@ const dateSchema = new Schema({
 	updatedAt: String,
 });
 
-dateSchema.plugin(require('mongoose-autopopulate'));
+appointmentSchema.plugin(require('mongoose-autopopulate'));
 
-export default model('Date', dateSchema);
+export default model('Appointment', appointmentSchema);

@@ -15,9 +15,9 @@ const imageSchema = new Schema({
 		required: true,
 		autopopulate: true,
 	},
-	date: {
+	appointment: {
 		type: Schema.Types.ObjectId,
-		ref: 'Date',
+		ref: 'Appointment',
 		required: true,
 		autopopulate: true,
 	},
