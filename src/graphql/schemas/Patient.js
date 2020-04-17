@@ -10,7 +10,7 @@ export default gql`
 		phoneNumber: String!
 		email: String
 		address: addressType
-		referedBy: ID
+		referedBy: User
 		allergies: String
 		records: [recordType]
 		status: Int

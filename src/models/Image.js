@@ -13,16 +13,19 @@ const imageSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'Patient',
 		required: true,
+		autopopulate: true,
 	},
 	date: {
 		type: Schema.Types.ObjectId,
 		ref: 'Date',
 		required: true,
+		autopopulate: true,
 	},
 	uploadedBy: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: true,
+		autopopulate: true,
 	},
 	url: {
 		type: String,
@@ -32,5 +35,7 @@ const imageSchema = new Schema({
 	createdAt: String,
 	updatedAt: String,
 });
+
+imageSchema.plugin(require('mongoose-autopopulate'));
 
 export default model('Image', imageSchema);

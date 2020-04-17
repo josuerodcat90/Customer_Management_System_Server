@@ -35,6 +35,7 @@ const patientSchema = new Schema({
 	referedBy: {
 		type: Schema.Types.ObjectId,
 		ref: 'Patient',
+		autopopulate: true,
 	},
 	allergies: {
 		type: String,
@@ -54,5 +55,7 @@ const patientSchema = new Schema({
 	createdAt: String,
 	updatedAt: String,
 });
+
+patientSchema.plugin(require('mongoose-autopopulate'));
 
 export default model('Patient', patientSchema);

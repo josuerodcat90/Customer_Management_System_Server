@@ -7,7 +7,7 @@ export default {
 	Query: {
 		async getDates() {
 			try {
-				const dates = await Date.find({}).populate('doctor patient createdBy');
+				const dates = await Date.find();
 				return dates;
 			} catch (err) {
 				throw new Error(err);
@@ -15,7 +15,7 @@ export default {
 		},
 		async getDate(_, { dateId }) {
 			try {
-				const date = await Date.findById(dateId).populate('doctor patient createdBy');
+				const date = await Date.findOne({ _id: dateId });
 				if (!date) {
 					throw new Error('Date not found!', Error);
 				} else {
@@ -27,9 +27,9 @@ export default {
 		},
 		async getDatesByPatient(_, { patientId }) {
 			try {
-				const dates = await Date.find({ patient: patientId })
-					.sort({ createdAt: -1 })
-					.populate('doctor patient createdBy');
+				const dates = await Date.find({ patient: patientId }).sort({
+					createdAt: -1,
+				});
 				if (!dates) {
 					throw new Error('Dates of this patient not found!', Error);
 				} else {
@@ -108,24 +108,28 @@ export default {
 			context
 		) {
 			const user = checkAuth(context);
+			const date = await Date.findOne({ _id: dateId }, {}, { autopopulate: false });
 
 			try {
-				const date = await Date.findById(dateId);
 				if (date.createdBy == user._id) {
-					await Date.findByIdAndUpdate(date._id, {
-						title,
-						start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
-						end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
-						classname,
-						description,
-						editable,
-						allday,
-						doctor,
-						createdBy: user._id,
-						patient,
-						updatedAt: moment().format('YYYY/MM/DD HH:mm'),
-					});
-					return date;
+					const updatedDate = await Date.findOneAndUpdate(
+						{ _id: dateId },
+						{
+							title,
+							start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
+							end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
+							classname,
+							description,
+							editable,
+							allday,
+							doctor,
+							createdBy: user._id,
+							patient,
+							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+						},
+						{ new: true }
+					);
+					return updatedDate;
 				} else {
 					throw new AuthenticationError(
 						'Action not allowed, you must be logged on or have a valid token to update a date.'
@@ -137,12 +141,12 @@ export default {
 		},
 		async deleteDate(_, { dateId }, context) {
 			const user = checkAuth(context);
+			const date = await Date.findOne({ _id: dateId }, {}, { autopopulate: false });
 
 			try {
-				const date = await Date.findById(dateId);
 				if (date.createdBy == user._id) {
 					await date.delete();
-					return 'Date deleted succesfully';
+					return 'Date deleted succesfully.';
 				} else {
 					throw new AuthenticationError(
 						'Action not allowed, you must be logged on or have a valid token to delete a date.'

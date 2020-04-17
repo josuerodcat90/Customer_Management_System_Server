@@ -27,6 +27,7 @@
     "merge-graphql-schemas": "^1.7.7",
     "moment": "^2.24.0",
     "mongoose": "^5.9.9",
+    "mongoose-autopopulate": "^0.12.1",
     "path": "^0.12.7",
     "rimraf": "^3.0.2"
   },

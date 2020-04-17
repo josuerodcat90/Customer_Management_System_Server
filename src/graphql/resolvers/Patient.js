@@ -9,7 +9,7 @@ export default {
 			return await Patient.find();
 		},
 		async getPatient(_, { patientId }) {
-			return await Patient.findById(patientId);
+			return await Patient.findOne({ _id: patientId });
 		},
 	},
 	Mutation: {
@@ -114,17 +114,22 @@ export default {
 		},
 		async deletePatient(_, { patientId }, context) {
 			const user = checkAuth(context);
+			const patient = await Patient.findOne({ _id: patientId }, {}, { autopopulate: false });
 
 			try {
-				if (user) {
-					await Patient.findByIdAndDelete(patientId);
+				if (user && patient) {
+					await patient.delete();
 					return 'Patient deleted succesfully';
+				} else if (user && !patient) {
+					throw new Error("The patient doesn't exist in the database.");
 				} else {
 					throw new AuthenticationError(
 						'Action not allowed, you must be logged on or have a valid token to delete a patient.'
 					);
 				}
-			} catch (err) {}
+			} catch (err) {
+				throw new Error(err);
+			}
 		},
 	},
 };

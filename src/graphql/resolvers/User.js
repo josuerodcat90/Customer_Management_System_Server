@@ -57,7 +57,7 @@ export default {
 
 			return {
 				...user._doc,
-				id: user._id,
+				_id: user._id,
 				token,
 			};
 		},
@@ -163,11 +163,11 @@ export default {
 		},
 		async deleteUser(_, { userId }, context) {
 			const user = checkAuth(context);
-			const dbUser = await User.findById(userId);
+			const dbUser = await User.findOne({ _id: userId });
 
 			try {
 				if (user._id === dbUser._id) {
-					await User.findByIdAndDelete(userId);
+					await dbUser.delete();
 					return 'User deleted succesfully';
 				} else {
 					throw new AuthenticationError(

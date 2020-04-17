@@ -26,6 +26,6 @@ export default gql`
 	type Mutation {
 		createDoctor(input: doctorInput!): Doctor!
 		updateDoctor(doctorId: ID!, input: doctorInput!): Doctor!
-		deleteDoctor(doctorId: ID!): Doctor!
+		deleteDoctor(doctorId: ID!): String!
 	}
 `;
