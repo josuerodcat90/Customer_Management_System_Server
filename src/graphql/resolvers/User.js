@@ -20,7 +20,7 @@ function generateToken(user) {
 			usericon: user.userIcon,
 		},
 		process.env.SECRET_KEY,
-		{ expiresIn: '7d' } ///FIXME: return the expire time to 1h
+		{ expiresIn: '3h' } ///FIXME: return the expire time to 1h
 	);
 }
 
@@ -126,19 +126,16 @@ export default {
 		},
 		async updateUser(
 			_,
-			{
-				userId,
-				input: { firstname, lastname, email, password, status, range, bachTitle, userIcon },
-			},
+			{ userId, input: { firstname, lastname, email, password, status, range } },
 			context
 		) {
 			const user = checkAuth(context);
-			const dbUser = await User.findById(userId);
+			const dbUser = await User.findOne({ _id: userId });
 
 			try {
 				if (user._id == dbUser._id) {
-					return await User.findByIdAndUpdate(
-						userId,
+					return await User.findOneAndUpdate(
+						{ _id: userId },
 						{
 							firstname,
 							lastname,
@@ -146,8 +143,6 @@ export default {
 							password,
 							status,
 							range,
-							bachTitle,
-							userIcon,
 							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
 						},
 						{ new: true }
