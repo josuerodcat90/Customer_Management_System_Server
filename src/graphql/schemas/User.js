@@ -38,16 +38,24 @@ export default gql`
 		password: String!
 		confirmPassword: String!
 		profilePic: profilePicInput
-		status: Int
-		range: Int
-		bachTitle: String
-		userIcon: String
+	}
+
+	input userShortInput {
+		firstname: String
+		lastname: String
+		email: String
+	}
+
+	input userPasswordInput {
+		password: String!
+		confirmPassword: String!
 	}
 
 	type Mutation {
 		createUser(input: userInput!): User!
 		login(email: String!, password: String!): User!
-		updateUser(userId: ID!, input: userInput): User!
+		updateUserInfo(userId: ID!, input: userShortInput!): User!
+		updateUserPassword(userId: ID!, input: userPasswordInput!): User!
 		deleteUser(userId: ID!): String!
 	}
 `;

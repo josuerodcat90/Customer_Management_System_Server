@@ -63,21 +63,7 @@ export default {
 		},
 		async createUser(
 			_,
-			{
-				input: {
-					firstname,
-					lastname,
-					email,
-					password,
-					confirmPassword,
-					status,
-					range,
-					bachTitle,
-					userIcon,
-				},
-			},
-			context,
-			info
+			{ input: { firstname, lastname, email, password, confirmPassword, profilePic } }
 		) {
 			const { valid, errors } = validateUserRegisterInput(
 				firstname,
@@ -108,12 +94,10 @@ export default {
 				lastname,
 				email,
 				password,
-				status,
-				range,
-				bachTitle,
-				userIcon,
+				profilePic,
 				createdAt: moment().format('YYYY/MM/DD HH:mm'),
 			});
+
 			const res = await newUser.save();
 
 			const token = generateToken(res);
@@ -124,32 +108,64 @@ export default {
 				token,
 			};
 		},
-		async updateUser(
-			_,
-			{ userId, input: { firstname, lastname, email, password, status, range } },
-			context
-		) {
+		async updateUserInfo(_, { userId, input: { firstname, lastname, email } }, context) {
 			const user = checkAuth(context);
 			const dbUser = await User.findOne({ _id: userId });
 
 			try {
 				if (user._id == dbUser._id) {
-					return await User.findOneAndUpdate(
+					const res = await User.findOneAndUpdate(
 						{ _id: userId },
 						{
 							firstname,
 							lastname,
 							email,
-							password,
-							status,
-							range,
 							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
 						},
 						{ new: true }
 					);
+
+					const token = generateToken(res);
+
+					return {
+						...res._doc,
+						_id: res._id,
+						token,
+					};
 				} else {
 					throw new AuthenticationError(
 						'Action not allowed, you must be the owner of this account to update it.'
+					);
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async updateUserPassword(_, { userId, input: { password, confirmPassword } }, context) {
+			const user = checkAuth(context);
+			const dbUser = await User.findOne({ _id: userId });
+
+			try {
+				if (user._id == dbUser._id) {
+					if (password !== confirmPassword) {
+						throw new Error('Password and Confirm Pasword fields must match.');
+					} else {
+						password = await bcryptjs.hash(password, 12);
+
+						const updatedUser = await User.findOneAndUpdate(
+							{ _id: userId },
+							{
+								password,
+								updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+							},
+							{ new: true }
+						);
+
+						return updatedUser;
+					}
+				} else {
+					throw new AuthenticationError(
+						'Action not allowed, you must be the owner of this account to update the password.'
 					);
 				}
 			} catch (err) {
