@@ -53,10 +53,13 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async getAppointmentsByDateTimeRange(_, { startDate, endDate }) {
+		async getAppointmentsByDateRange(_, { startDate, endDate }) {
+			const start = moment(startDate).startOf('day').format('YYYY/MM/DD HH:mm');
+			const end = moment(endDate).endOf('day').format('YYYY/MM/DD HH:mm');
+
 			try {
 				const appointments = await Appointment.find({
-					start_date: { $gte: startDate, $lt: endDate },
+					start_date: { $gte: start, $lt: end },
 				});
 				if (!appointments) {
 					throw new Error('No Appointments found between this date range!', Error);

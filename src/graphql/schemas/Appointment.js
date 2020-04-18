@@ -22,7 +22,7 @@ export default gql`
 		getAppointments: [Appointment!]!
 		getAppointmentsByDoctor(doctorId: ID!): [Appointment!]
 		getAppointmentsByPatient(patientId: ID!): [Appointment!]
-		getAppointmentsByDateTimeRange(startDate: String!, endDate: String!): [Appointment!]
+		getAppointmentsByDateRange(startDate: String!, endDate: String!): [Appointment!]
 	}
 
 	input appointmentInput {
