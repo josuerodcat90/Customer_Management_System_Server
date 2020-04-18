@@ -54,12 +54,14 @@ export default {
 			}
 		},
 		async getAppointmentsByDateRange(_, { startDate, endDate }) {
-			const start = moment(startDate).startOf('day').format('YYYY/MM/DD HH:mm');
-			const end = moment(endDate).endOf('day').format('YYYY/MM/DD HH:mm');
+			const start = moment(startDate).startOf('day').format('YYYY-MM-DD HH:mm');
+			const end = moment(endDate).endOf('day').format('YYYY-MM-DD HH:mm');
 
 			try {
 				const appointments = await Appointment.find({
 					start_date: { $gte: start, $lt: end },
+				}).sort({
+					start_date: 1,
 				});
 				if (!appointments) {
 					throw new Error('No Appointments found between this date range!', Error);
@@ -104,8 +106,8 @@ export default {
 
 			const newAppointment = new Appointment({
 				title,
-				start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
-				end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
+				start_date: moment(start_date).format('YYYY-MM-DD HH:mm'),
+				end_date: moment(end_date).format('YYYY-MM-DD HH:mm'),
 				classname,
 				description,
 				editable,
@@ -113,7 +115,7 @@ export default {
 				doctor,
 				createdBy: user._id,
 				patient,
-				createdAt: moment().format('YYYY/MM/DD HH:mm'),
+				createdAt: moment().format('YYYY-MM-DD HH:mm'),
 			});
 
 			const appointment = await newAppointment.save();
@@ -151,8 +153,8 @@ export default {
 						{ _id: appointmentId },
 						{
 							title,
-							start_date: moment(start_date).format('YYYY/MM/DD HH:mm'),
-							end_date: moment(end_date).format('YYYY/MM/DD HH:mm'),
+							start_date: moment(start_date).format('YYYY-MM-DD HH:mm'),
+							end_date: moment(end_date).format('YYYY-MM-DD HH:mm'),
 							classname,
 							description,
 							editable,
@@ -160,7 +162,7 @@ export default {
 							doctor,
 							createdBy: user._id,
 							patient,
-							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }
 					);
