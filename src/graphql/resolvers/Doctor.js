@@ -22,7 +22,7 @@ export default {
 						firstname,
 						lastname,
 						status,
-						createdAt: moment().format('YYYY/MM/DD HH:mm'),
+						createdAt: moment().format('YYYY-MM-DD HH:mm'),
 					});
 					await newDoctor.save();
 
@@ -47,7 +47,7 @@ export default {
 							firstname,
 							lastname,
 							status,
-							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }
 					);

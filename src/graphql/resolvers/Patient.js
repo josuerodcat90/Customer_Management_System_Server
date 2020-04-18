@@ -47,7 +47,7 @@ export default {
 						allergies,
 						records,
 						status,
-						createdAt: moment().format('YYYY/MM/DD HH:mm'),
+						createdAt: moment().format('YYYY-MM-DD HH:mm'),
 					});
 					await newPatient.save();
 
@@ -99,7 +99,7 @@ export default {
 							allergies,
 							records,
 							status,
-							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }
 					);

@@ -31,7 +31,7 @@ export default {
 						appointment,
 						uploadedBy: user._id,
 						url,
-						createdAt: moment().format('YYYY/MM/DD HH:mm'),
+						createdAt: moment().format('YYYY-MM-DD HH:mm'),
 					});
 
 					await newImage.save();

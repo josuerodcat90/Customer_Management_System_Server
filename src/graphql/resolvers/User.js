@@ -95,7 +95,7 @@ export default {
 				email,
 				password,
 				profilePic,
-				createdAt: moment().format('YYYY/MM/DD HH:mm'),
+				createdAt: moment().format('YYYY-MM-DD HH:mm'),
 			});
 
 			const res = await newUser.save();
@@ -120,7 +120,7 @@ export default {
 							firstname,
 							lastname,
 							email,
-							updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }
 					);
@@ -156,7 +156,7 @@ export default {
 							{ _id: userId },
 							{
 								password,
-								updatedAt: moment().format('YYYY/MM/DD HH:mm'),
+								updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 							},
 							{ new: true }
 						);
