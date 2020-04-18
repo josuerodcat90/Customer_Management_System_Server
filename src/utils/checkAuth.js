@@ -1,6 +1,7 @@
 import { AuthenticationError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
 
+///module to validate the user login
 module.exports = (context) => {
 	const authHeader = context.req.headers.authorization;
 	if (authHeader) {

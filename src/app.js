@@ -9,10 +9,9 @@ import path from 'path';
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, '/graphql/schemas')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, '/graphql/resolvers')));
 
-///declare the app constant
 const app = express();
 
-///settings
+///app settings
 app.set('PORT', process.env.PORT || 4000);
 
 ///Middlewares
