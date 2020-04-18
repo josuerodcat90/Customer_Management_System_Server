@@ -5,14 +5,6 @@ import { AuthenticationError } from 'apollo-server-core';
 
 export default {
 	Query: {
-		async getAppointments() {
-			try {
-				const appointments = await Appointment.find();
-				return appointments;
-			} catch (err) {
-				throw new Error(err);
-			}
-		},
 		async getAppointment(_, { appointmentId }) {
 			try {
 				const appointment = await Appointment.findOne({ _id: appointmentId });
@@ -25,6 +17,28 @@ export default {
 				throw new Error(err);
 			}
 		},
+		async getAppointments() {
+			try {
+				const appointments = await Appointment.find();
+				return appointments;
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async getAppointmentsByDoctor(_, { doctorId }) {
+			try {
+				const appointments = await Appointment.find({ doctor: doctorId }).sort({
+					start_date: -1,
+				});
+				if (!appointments) {
+					throw new Error('Appointments of this doctor not found!', Error);
+				} else {
+					return appointments;
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
 		async getAppointmentsByPatient(_, { patientId }) {
 			try {
 				const appointments = await Appointment.find({ patient: patientId }).sort({
@@ -32,6 +46,20 @@ export default {
 				});
 				if (!appointments) {
 					throw new Error('Appointments of this patient not found!', Error);
+				} else {
+					return appointments;
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async getAppointmentsByDateTimeRange(_, { startDate, endDate }) {
+			try {
+				const appointments = await Appointment.find({
+					start_date: { $gte: startDate, $lt: endDate },
+				});
+				if (!appointments) {
+					throw new Error('No Appointments found between this date range!', Error);
 				} else {
 					return appointments;
 				}

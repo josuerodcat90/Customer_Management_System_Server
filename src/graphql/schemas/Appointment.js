@@ -18,9 +18,11 @@ export default gql`
 	}
 
 	type Query {
-		getAppointments: [Appointment!]!
-		getAppointmentsByPatient(patientId: ID!): [Appointment!]
 		getAppointment(appointmentId: ID!): Appointment!
+		getAppointments: [Appointment!]!
+		getAppointmentsByDoctor(doctorId: ID!): [Appointment!]
+		getAppointmentsByPatient(patientId: ID!): [Appointment!]
+		getAppointmentsByDateTimeRange(startDate: String!, endDate: String!): [Appointment!]
 	}
 
 	input appointmentInput {
