@@ -13,40 +13,12 @@ export default {
 		},
 	},
 	Mutation: {
-		async createPatient(
-			_,
-			{
-				input: {
-					firstname,
-					lastname,
-					birthDate,
-					idDocument,
-					phoneNumber,
-					email,
-					address,
-					referedBy,
-					allergies,
-					records,
-					status,
-				},
-			},
-			context
-		) {
+		async createPatient(_, { input }, context) {
 			try {
 				const user = checkAuth(context);
 				if (user) {
 					const newPatient = new Patient({
-						firstname,
-						lastname,
-						birthDate,
-						idDocument,
-						phoneNumber,
-						email,
-						address,
-						referedBy,
-						allergies,
-						records,
-						status,
+						...input,
 						createdAt: moment().format('YYYY-MM-DD HH:mm'),
 					});
 					await newPatient.save();
@@ -61,26 +33,7 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async updatePatient(
-			_,
-			{
-				patientId,
-				input: {
-					firstname,
-					lastname,
-					birthDate,
-					idDocument,
-					phoneNumber,
-					email,
-					address,
-					referedBy,
-					allergies,
-					records,
-					status,
-				},
-			},
-			context
-		) {
+		async updatePatient(_, { patientId, input }, context) {
 			const user = checkAuth(context);
 
 			try {
@@ -88,17 +41,7 @@ export default {
 					return await Patient.findByIdAndUpdate(
 						patientId,
 						{
-							firstname,
-							lastname,
-							birthDate,
-							idDocument,
-							phoneNumber,
-							email,
-							address,
-							referedBy,
-							allergies,
-							records,
-							status,
+							...input,
 							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }

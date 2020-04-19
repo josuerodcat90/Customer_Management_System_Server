@@ -19,18 +19,14 @@ export default {
 		},
 	},
 	Mutation: {
-		async uploadImage(_, { input: { name, size, pacient, appointment, url } }, context) {
+		async uploadImage(_, { input }, context) {
 			const user = checkAuth(context);
 
 			try {
 				if (user) {
 					const newImage = new Image({
-						name,
-						size,
-						pacient,
-						appointment,
+						...input,
 						uploadedBy: user._id,
-						url,
 						createdAt: moment().format('YYYY-MM-DD HH:mm'),
 					});
 

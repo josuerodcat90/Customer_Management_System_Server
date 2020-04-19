@@ -108,7 +108,7 @@ export default {
 				token,
 			};
 		},
-		async updateUserInfo(_, { userId, input: { firstname, lastname, email } }, context) {
+		async updateUserInfo(_, { userId, input }, context) {
 			const user = checkAuth(context);
 			const dbUser = await User.findOne({ _id: userId });
 
@@ -117,9 +117,7 @@ export default {
 					const res = await User.findOneAndUpdate(
 						{ _id: userId },
 						{
-							firstname,
-							lastname,
-							email,
+							...input,
 							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }

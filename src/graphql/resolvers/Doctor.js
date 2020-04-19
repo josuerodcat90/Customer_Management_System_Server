@@ -13,15 +13,13 @@ export default {
 		},
 	},
 	Mutation: {
-		async createDoctor(_, { input: { firstname, lastname, status } }, context) {
+		async createDoctor(_, { input }, context) {
 			const user = checkAuth(context);
 
 			try {
 				if (user) {
 					const newDoctor = new Doctor({
-						firstname,
-						lastname,
-						status,
+						...input,
 						createdAt: moment().format('YYYY-MM-DD HH:mm'),
 					});
 					await newDoctor.save();
@@ -36,7 +34,7 @@ export default {
 				throw new Error(err);
 			}
 		},
-		async updateDoctor(_, { doctorId, input: { firstname, lastname, status } }, context) {
+		async updateDoctor(_, { doctorId, input }, context) {
 			const user = checkAuth(context);
 
 			try {
@@ -44,9 +42,7 @@ export default {
 					return await Doctor.findOneAndUpdate(
 						{ _id: doctorId },
 						{
-							firstname,
-							lastname,
-							status,
+							...input,
 							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }
