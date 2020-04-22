@@ -2,14 +2,14 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 	type Appointment {
-		_id: ID!
+		id: ID!
 		title: String!
-		start_date: String!
-		end_date: String!
-		classname: String
+		start: String!
+		end: String!
+		className: String
 		description: String
 		editable: Boolean
-		allday: Boolean
+		allDay: Boolean
 		doctor: Doctor
 		createdBy: User!
 		patient: Patient
@@ -27,12 +27,12 @@ export default gql`
 
 	input appointmentInput {
 		title: String!
-		start_date: String!
-		end_date: String!
-		classname: String
+		start: String!
+		end: String!
+		className: String
 		description: String
 		editable: Boolean
-		allday: Boolean
+		allDay: Boolean
 		doctor: ID
 		patient: ID
 	}

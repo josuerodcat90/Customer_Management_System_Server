@@ -2,9 +2,9 @@ import { Schema, model } from 'mongoose';
 
 const appointmentSchema = new Schema({
 	title: String,
-	start_date: String,
-	end_date: String,
-	classname: {
+	start: String,
+	end: String,
+	className: {
 		type: String,
 		default: 'Pendiente',
 	},
@@ -16,7 +16,7 @@ const appointmentSchema = new Schema({
 		type: Boolean,
 		default: true,
 	},
-	allday: {
+	allDay: {
 		type: Boolean,
 		default: false,
 	},
@@ -38,6 +38,14 @@ const appointmentSchema = new Schema({
 	},
 	createdAt: String,
 	updatedAt: String,
+});
+
+appointmentSchema.set('toJSON', {
+	virtuals: true,
+	versionKey: false,
+	transform: function (doc, ret) {
+		delete ret._id;
+	},
 });
 
 appointmentSchema.plugin(require('mongoose-autopopulate'));

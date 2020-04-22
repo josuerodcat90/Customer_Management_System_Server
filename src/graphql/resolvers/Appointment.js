@@ -28,7 +28,7 @@ export default {
 		async getAppointmentsByDoctor(_, { doctorId }) {
 			try {
 				const appointments = await Appointment.find({ doctor: doctorId }).sort({
-					start_date: -1,
+					start: -1,
 				});
 				if (!appointments) {
 					throw new Error('Appointments of this doctor not found!', Error);
@@ -59,9 +59,9 @@ export default {
 
 			try {
 				const appointments = await Appointment.find({
-					start_date: { $gte: start, $lt: end },
+					start: { $gte: start, $lt: end },
 				}).sort({
-					start_date: 1,
+					start: 1,
 				});
 				if (!appointments) {
 					throw new Error('No Appointments found between this date range!', Error);
@@ -81,17 +81,17 @@ export default {
 			if (input.title.trim() === '') {
 				throw new Error('Title field must not be empty');
 			}
-			if (input.start_date.trim() === '') {
+			if (input.start.trim() === '') {
 				throw new Error('Start date field must not be empty');
 			}
-			if (input.end_date.trim() === '') {
+			if (input.end.trim() === '') {
 				throw new Error('End date field must not be empty');
 			}
 
 			const newAppointment = new Appointment({
 				...input,
-				start_date: moment(input.start_date).format('YYYY-MM-DD HH:mm'),
-				end_date: moment(input.end_date).format('YYYY-MM-DD HH:mm'),
+				start: moment(input.start).format('YYYY-MM-DD HH:mm'),
+				end: moment(input.end).format('YYYY-MM-DD HH:mm'),
 				createdBy: user._id,
 				createdAt: moment().format('YYYY-MM-DD HH:mm'),
 			});
@@ -114,8 +114,8 @@ export default {
 						{ _id: appointmentId },
 						{
 							...input,
-							start_date: moment(input.start_date).format('YYYY-MM-DD HH:mm'),
-							end_date: moment(input.end_date).format('YYYY-MM-DD HH:mm'),
+							start: moment(input.start).format('YYYY-MM-DD HH:mm'),
+							end: moment(input.end).format('YYYY-MM-DD HH:mm'),
 							updatedAt: moment().format('YYYY-MM-DD HH:mm'),
 						},
 						{ new: true }
