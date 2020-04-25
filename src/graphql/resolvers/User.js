@@ -17,10 +17,12 @@ function generateToken(user) {
 			range: user.range,
 			status: user.status,
 			title: user.bachTitle,
-			usericon: user.userIcon,
+			userIcon: user.userIcon,
+			userColor: user.userColor,
+			userTheme: user.userTheme,
 		},
 		process.env.SECRET_KEY,
-		{ expiresIn: '3h' } ///FIXME: return the expire time to 1h
+		{ expiresIn: '1h' } ///FIXME: return the expire time to 1h
 	);
 }
 
@@ -164,6 +166,66 @@ export default {
 				} else {
 					throw new AuthenticationError(
 						'Action not allowed, you must be the owner of this account to update the password.'
+					);
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async changeSysColor(_, { userId, input }, context) {
+			const user = checkAuth(context);
+			const dbUser = await User.findOne({ _id: userId });
+
+			try {
+				if (user._id == dbUser._id) {
+					const res = await User.findOneAndUpdate(
+						{ _id: userId },
+						{
+							...input,
+						},
+						{ new: true }
+					);
+
+					const token = generateToken(res);
+
+					return {
+						...res._doc,
+						_id: res._id,
+						token,
+					};
+				} else {
+					throw new AuthenticationError(
+						'Action not allowed, you must be the owner of this account tochange the color.'
+					);
+				}
+			} catch (err) {
+				throw new Error(err);
+			}
+		},
+		async changeSysTheme(_, { userId, input }, context) {
+			const user = checkAuth(context);
+			const dbUser = await User.findOne({ _id: userId });
+
+			try {
+				if (user._id == dbUser._id) {
+					const res = await User.findOneAndUpdate(
+						{ _id: userId },
+						{
+							...input,
+						},
+						{ new: true }
+					);
+
+					const token = generateToken(res);
+
+					return {
+						...res._doc,
+						_id: res._id,
+						token,
+					};
+				} else {
+					throw new AuthenticationError(
+						'Action not allowed, you must be the owner of this account tochange the theme.'
 					);
 				}
 			} catch (err) {

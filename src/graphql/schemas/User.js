@@ -12,6 +12,8 @@ export default gql`
 		token: String!
 		bachTitle: String!
 		userIcon: String!
+		userTheme: Boolean!
+		userColor: String!
 		createdAt: String!
 		updatedAt: String
 	}
@@ -51,11 +53,21 @@ export default gql`
 		confirmPassword: String!
 	}
 
+	input userColorInput {
+		userColor: String!
+	}
+
+	input userThemeInput {
+		userTheme: Boolean!
+	}
+
 	type Mutation {
 		createUser(input: userInput!): User!
 		login(email: String!, password: String!): User!
 		updateUserInfo(userId: ID!, input: userShortInput!): User!
 		updateUserPassword(userId: ID!, input: userPasswordInput!): User!
+		changeSysColor(userId: ID!, input: userColorInput!): User!
+		changeSysTheme(userId: ID!, input: userThemeInput!): User!
 		deleteUser(userId: ID!): String!
 	}
 `;
