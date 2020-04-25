@@ -41,6 +41,14 @@ const userSchema = new Schema({
 		type: String,
 		default: 'fas fa-user',
 	},
+	userColor: {
+		type: String,
+		default: '#3f51b5',
+	},
+	userTheme: {
+		type: Boolean,
+		default: false,
+	},
 	createdAt: String,
 	updatedAt: String,
 });
