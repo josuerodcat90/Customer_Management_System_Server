@@ -1,14 +1,12 @@
-module.exports.validateUserRegisterInput = (
+export const validateUserRegisterInput = (
 	firstname,
 	lastname,
 	email,
 	password,
 	confirmPassword
 ) => {
-	///declare the object `Error`
 	const errors = {};
 
-	///verify if the fields are empty
 	if (firstname.trim() === '') {
 		errors.firstname = 'Firstname field must not be empty';
 	}
@@ -22,7 +20,8 @@ module.exports.validateUserRegisterInput = (
 	} else {
 		const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
 		if (!email.match(regEx)) {
-			errors.email = 'Email must be a valid email address like "example@example.com"';
+			errors.email =
+				'Email must be a valid email address like "example@example.com"';
 		}
 	}
 
@@ -38,7 +37,7 @@ module.exports.validateUserRegisterInput = (
 	};
 };
 
-module.exports.validateLoginInput = (email, password) => {
+export const validateLoginInput = (email, password) => {
 	const errors = {};
 	if (email.trim() === '') {
 		errors.email = 'Email field must not be empty';
